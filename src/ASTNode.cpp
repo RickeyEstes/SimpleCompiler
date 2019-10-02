@@ -721,6 +721,11 @@ static void parseForStatement(ASTNode &node, Tokenizer::const_iterator iter, con
             return;
         }
     }
+    if(iter >= end || !iter->is("Identifier")) {
+        Logger::getInstance().error(iter->getPos(), "expect a(n) identifier here");
+        node.endIter = iter;
+        return;
+    }
     iter = node.newChild("Identifier", "idB", iter, end).endIter;
     if(node.getChild("idB").valIter->str() != node.getChild("idA").valIter->str()) {
         Logger::getInstance().error(node.getChild("idB").startIter->getPos(), "expect the same identifier as previous one");

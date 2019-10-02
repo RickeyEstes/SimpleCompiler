@@ -1,5 +1,6 @@
 #include "OptimizedDumper.h"
 
+#include <cmath>
 #include <set>
 #include <map>
 
@@ -440,7 +441,7 @@ void optAssignReg(Function &local,
     }
 
     for(const auto &var : additionVar)
-        local.addVariable(Variable{var, local.definedAt, VarIntType});
+        local.addVariable(Variable{var, local.definedAt, VarIntType, 1});
 
 #ifdef DEBUG
     std::cerr << std::endl;
@@ -495,7 +496,7 @@ void optAssignReg(Function &local,
         assert(s.empty() || s[0] != '#');
         auto res = local.lookup(s);
         if(res.type == TNotFound && s.substr(0, 8) == "tempVar$") {
-            local.addVariable(Variable{s, local.definedAt, VarIntType});
+            local.addVariable(Variable{s, local.definedAt, VarIntType, 499});
         }
         if(isId(s)) {
             assert(local.lookup(s).type != TNotFound);
@@ -649,7 +650,7 @@ void optAssignReg(Function &local,
     auto isVar = [&] (const std::string &id) {
         auto res = local.lookup(id);
         if(res.type == TNotFound && id.substr(0, 8) == "tempVar$") {
-            local.addVariable(Variable{id, local.definedAt, VarIntType});
+            local.addVariable(Variable{id, local.definedAt, VarIntType, 1});
             res = local.lookup(id);
         }
         if(res.type == TParameter)
